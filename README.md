@@ -1,285 +1,87 @@
-# HR Workflow Designer
+*HR Workflow Designer – README*
 
-A React-based visual workflow designer for creating and testing HR workflows. Built with React Flow, this application allows HR admins to design complex workflows involving tasks, approvals, and automated steps.
+-> *Architecture*
 
-## Features
+This project is built with React and React Flow to create a simple drag-and-drop workflow builder.
+The structure is split into clear parts:
 
-- **Visual Workflow Canvas**: Drag-and-drop interface powered by React Flow
-- **Custom Node Types**:
-  - Start Node - Workflow entry point
-  - Task Node - Human tasks (document collection, forms, etc.)
-  - Approval Node - Manager or HR approval steps
-  - Automated Step Node - System-triggered actions
-  - End Node - Workflow completion
-- **Dynamic Configuration Forms**: Each node type has a custom form with validation
-- **Mock API Integration**: Simulates backend with automated action definitions
-- **Workflow Testing/Sandbox**: Validate and simulate workflow execution
-- **Import/Export**: Save and load workflows as JSON
-- **Real-time Validation**: Detects cycles, missing connections, and structural issues
+Canvas (React Flow): Handles node rendering, connections, zooming, and dragging.
 
-## Architecture
+Custom Nodes: Separate components for Start, Task, Approval, Automated Step, and End nodes.
 
-### Project Structure
+Configuration Forms: Each node type has its own form for updating details.
 
-```
-src/
-├── api/
-│   └── mockApi.js           # Mock API for automations and workflow simulation
-├── components/
-│   ├── forms/               # Node configuration forms
-│   │   ├── StartNodeForm.jsx
-│   │   ├── TaskNodeForm.jsx
-│   │   ├── ApprovalNodeForm.jsx
-│   │   ├── AutomatedNodeForm.jsx
-│   │   ├── EndNodeForm.jsx
-│   │   └── FormStyles.css
-│   ├── nodes/               # Custom React Flow node components
-│   │   ├── BaseNode.jsx
-│   │   ├── StartNode.jsx
-│   │   ├── TaskNode.jsx
-│   │   ├── ApprovalNode.jsx
-│   │   ├── AutomatedNode.jsx
-│   │   ├── EndNode.jsx
-│   │   └── NodeStyles.css
-│   ├── NodeConfigPanel.jsx  # Right panel for node configuration
-│   ├── Sidebar.jsx          # Left sidebar with draggable nodes
-│   ├── WorkflowCanvas.jsx   # Main React Flow canvas
-│   └── WorkflowSandbox.jsx  # Testing/simulation modal
-├── constants/
-│   └── nodeTypes.js         # Node type definitions and configs
-├── hooks/
-│   ├── useWorkflowState.js  # Workflow state management
-│   └── useAutomations.js    # Fetch and manage automations
-├── App.jsx                  # Main application component
-└── main.jsx                 # Application entry point
-```
+State Management: A custom hook (useWorkflowState) manages nodes, edges, and updates.
 
-### Key Design Decisions
+Mock API: Simulates backend actions like loading automation steps and validating workflows.
 
-#### 1. **Modular Component Architecture**
-Each node type is a separate component with its own configuration form. This makes it easy to add new node types without modifying existing code.
+This separation keeps the code clean, easy to scale, and simple to maintain.
 
-#### 2. **Custom Hook for State Management**
-`useWorkflowState` centralizes all workflow state logic (nodes, edges, CRUD operations) making the main App component cleaner and easier to test.
+-> *How to Run*
 
-#### 3. **Separation of Concerns**
-- **API Layer**: Isolated in `src/api/` for easy replacement with real backend
-- **Components**: Pure presentational components
-- **Hooks**: Business logic and state management
-- **Constants**: Centralized configuration
+Install dependencies:
 
-#### 4. **Form Abstraction**
-Each node type has its own form component with controlled inputs. Forms update node data in real-time using the `onUpdate` callback.
-
-#### 5. **Mock API with Realistic Behavior**
-The mock API includes:
-- Async operations to simulate network latency
-- Workflow validation (cycles, missing connections, etc.)
-- Execution simulation with timeline generation
-- Error handling
-
-#### 6. **Type-Safe Node Configuration**
-Node types and initial data are defined in constants, ensuring consistency across the application.
-
-## Installation & Setup
-
-### Prerequisites
-- Node.js 16+
-- npm or yarn
-
-### Installation
-
-```bash
 npm install
-```
 
-### Running the Application
 
-```bash
+Start the development server:
+
 npm run dev
-```
 
-The application will be available at `http://localhost:5173`
 
-### Building for Production
+App runs at: http://localhost:5173
 
-```bash
+Production build:
+
 npm run build
-```
 
-## Usage
+-> *Design Decisions*
 
-### Creating a Workflow
+Modular structure: Every node and form is isolated, making future changes easy.
 
-1. **Drag nodes from the sidebar** onto the canvas
-2. **Connect nodes** by dragging from one node's handle to another
-3. **Configure nodes** by clicking on them to open the configuration panel
-4. **Test the workflow** using the "Test Workflow" button in the header
+React Flow: Chosen because it handles the heavy lifting—dragging, zooming, connection logic.
 
-### Node Configuration
+Mock API instead of backend: Helps simulate real features without needing a server.
 
-#### Start Node
-- Title: Name of the workflow start
-- Metadata: Optional key-value pairs for workflow context
+Real-time updates: Node data updates instantly when edited.
 
-#### Task Node
-- Title: Task name (required)
-- Description: Task details
-- Assignee: Person responsible
-- Due Date: Deadline for completion
-- Custom Fields: Additional key-value data
+Clean separation: UI, logic, API, and configuration are kept separate for clarity.
 
-#### Approval Node
-- Title: Approval step name
-- Approver Role: Who should approve (Manager, HRBP, Director, etc.)
-- Auto-Approve Threshold: Amount below which approval is automatic
+What’s Completed
 
-#### Automated Step Node
-- Title: Step name
-- Action: Select from available automated actions (loaded from mock API)
-- Parameters: Dynamic fields based on selected action
+Drag-and-drop workflow canvas
 
-#### End Node
-- End Message: Completion message
-- Summary Flag: Whether to generate a workflow summary
+Five fully functional custom node types
 
-### Workflow Validation
+Real-time configuration panel
 
-The sandbox validates:
-- Exactly one Start Node exists
-- At least one End Node exists
-- No orphaned nodes (all nodes connected)
-- No cycles in the workflow
-- Start Node has no incoming connections
-- End Node has no outgoing connections
+Add/remove nodes and connections
 
-### Import/Export
+Workflow validation (start/end rules, cycle check, orphan check)
 
-**Export**: Click "Test Workflow" then "Export as JSON" to download the workflow definition
+Mock API for automated actions
 
-**Import**: Click "Import" in the header to load a previously exported workflow
+Workflow testing/simulation panel
 
-## Technical Implementation
+Import and export as JSON
 
-### React Flow Integration
+Minimap, zoom controls, and responsive layout
 
-The application uses React Flow for the visual canvas with:
-- Custom node types
-- Minimap for navigation
-- Controls for zoom/pan
-- Background grid
-- Snap-to-grid functionality
 
-### State Management
+-> *What I Would Add With More Time*
 
-State is managed using React hooks:
-- `useState` for local component state
-- `useCallback` for memoized callbacks
-- Custom `useWorkflowState` hook for global workflow state
+Undo/redo actions
 
-### Form Handling
+Auto-arrange nodes
 
-All forms use controlled components with:
-- Real-time updates (onBlur)
-- Dynamic field rendering (for automated step parameters)
-- Validation feedback
+Error indicators on problematic nodes
 
-### Mock API
+Pre-built workflow templates
 
-The mock API simulates:
-- `GET /automations` - Returns available automated actions
-- `POST /simulate` - Validates and simulates workflow execution
+Copy/paste and multi-select
 
-Validation includes:
-- Structural validation (start/end nodes, connections)
-- Cycle detection using DFS
-- Execution path generation using BFS
+Keyboard shortcuts
 
-## Completed Features
+Branching/conditional nodes
 
--  React Flow canvas with drag-and-drop
--  5 custom node types with unique styling
--  Dynamic configuration forms for each node type
--  Real-time node updates
--  Connection management
--  Mock API layer with automations
--  Workflow validation (cycles, missing connections)
--  Workflow simulation with execution timeline
--  Import/Export functionality
--  Minimap and controls
--  Delete nodes and edges
--  Clear workflow
--  Responsive layout
-
-## Future Enhancements
-
-Given more time, the following features would add significant value:
-
-### Immediate Priority
-- **Undo/Redo**: History management for workflow changes
-- **Node Templates**: Pre-configured node patterns for common workflows
-- **Validation Error Indicators**: Visual markers on invalid nodes
-- **Auto-Layout**: Automatic node positioning for better organization
-
-### Medium Priority
-- **Multi-select**: Select and manipulate multiple nodes
-- **Copy/Paste**: Duplicate nodes and subgraphs
-- **Search/Filter**: Find nodes by name or type
-- **Keyboard Shortcuts**: Power-user efficiency improvements
-- **Zoom to Fit**: Auto-frame workflow in viewport
-
-### Long-term
-- **Version History**: Track workflow changes over time
-- **Collaboration**: Multi-user editing with conflict resolution
-- **Conditional Branching**: Support for decision nodes
-- **Variable System**: Pass data between nodes
-- **Backend Integration**: Connect to real API and database
-- **Authentication**: User management and permissions
-- **Workflow Templates Library**: Shareable workflow templates
-
-## Design Choices & Tradeoffs
-
-### What Worked Well
-- **Component modularity**: Easy to extend with new node types
-- **React Flow**: Handles complex canvas interactions out of the box
-- **Form abstraction**: Each node type is self-contained
-- **Mock API design**: Realistic enough to test integration patterns
-
-### Tradeoffs Made
-- **No TypeScript**: Used JavaScript for faster initial development (would add TypeScript in production)
-- **In-memory state**: No persistence layer (would add database integration for production)
-- **Simple validation**: Basic structural checks only (would expand for production)
-- **Limited error handling**: Focused on happy path (would add comprehensive error boundaries)
-
-### Time Allocation (~5 hours)
-- Architecture & setup: 30 minutes
-- Custom nodes & forms: 2 hours
-- React Flow integration: 1 hour
-- Mock API & validation: 1 hour
-- Sandbox/testing panel: 45 minutes
-- Styling & polish: 45 minutes
-
-## Testing
-
-While automated tests were not included in this prototype, a production version would include:
-
-- **Unit Tests**: Component logic, hooks, validation functions
-- **Integration Tests**: Workflow creation, node configuration, simulation
-- **E2E Tests**: Complete user workflows from creation to testing
-- **Accessibility Tests**: Keyboard navigation, screen reader support
-
-## Browser Support
-
-Tested on:
-- Chrome 120+
-- Firefox 120+
-- Safari 17+
-- Edge 120+
-
-## License
-
-MIT
-
-## Contact
-
-For questions or feedback about this implementation, please refer to the project repository.
+Real backend integration
