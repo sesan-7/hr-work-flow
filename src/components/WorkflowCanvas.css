@@ -1,0 +1,34 @@
+/* Workflow canvas */
+.workflow-canvas {
+  flex: 1;
+  height: 100vh;
+  background: #f3f4f6; /* slightly lighter neutral background */
+}
+
+/* Nodes */
+.react-flow__node {
+  cursor: pointer;
+}
+
+/* Edges */
+.react-flow__edge-path {
+  stroke: #6b7280;
+  stroke-width: 2;
+}
+
+.react-flow__edge.selected .react-flow__edge-path {
+  stroke: #3b82f6;
+  stroke-width: 3;
+}
+
+/* Controls */
+.react-flow__controls {
+  box-shadow: none; /* removed shadow for simplicity */
+}
+
+/* Minimap */
+.react-flow__minimap {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  box-shadow: none; /* removed shadow */
+}

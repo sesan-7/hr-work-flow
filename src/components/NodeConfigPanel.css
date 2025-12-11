@@ -1,0 +1,37 @@
+.config-panel {
+  width: 300px; /* slightly smaller for simplicity */
+  background: #fff;
+  border-left: 1px solid #e5e7eb;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.config-panel.empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 20px;
+}
+
+.empty-icon {
+  font-size: 40px;
+  margin-bottom: 12px;
+  opacity: 0.5;
+}
+
+.empty-state h3 {
+  margin: 0 0 6px 0;
+  color: #1f2937;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.empty-state p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 13px;
+}
